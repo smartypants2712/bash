@@ -1,0 +1,11 @@
+[Unit]
+Description=My Awesome App
+Documentation=https://mycompany.com/myawesomeapp
+
+[Service]
+ExecStart=/usr/bin/myapp --level=awesome
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
