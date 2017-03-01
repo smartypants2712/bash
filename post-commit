@@ -1,0 +1,26 @@
+#!/bin/sh
+
+REPOS="$1"
+REV="$2"
+TXN_NAME="$3"
+
+LOGFILE=/Users/simon.so/post-commit.log
+MESSAGE=$(svnlook log $REPOS -r $REV)
+AUTHOR=$(svnlook author $REPOS -r $REV)
+
+generate_body()
+{
+  cat <<EOF
+{
+  "body":"$AUTHOR committed (revision $REV) against this issue: $MESSAGE"
+}
+EOF
+}
+
+#mailer.py commit "$REPOS" "$REV" /path/to/mailer.conf
+
+echo "Running post-commit hook..." >> $LOGFILE
+echo "Author: $AUTHOR" >> $LOGFILE
+echo "Commit message: $MESSAGE" >> $LOGFILE
+
+curl -u jirabot:password123 -X POST --data "$(generate_body)" -H "Content-Type: application/json" http://localhost:8888/rest/api/2/issue/SL-1/comment >> $LOGFILE
