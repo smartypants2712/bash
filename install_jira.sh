@@ -1,5 +1,7 @@
 #/bin/bash
 
+# curl https://raw.githubusercontent.com/sosimon/bash/master/install_jira.sh | bash
+
 JIRA_BIN=atlassian-jira-software-8.1.0-x64.bin
 
 sudo yum update -y
